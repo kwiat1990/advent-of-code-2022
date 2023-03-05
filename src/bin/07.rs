@@ -135,9 +135,7 @@ pub fn part_two(input: &str) -> Option<u32> {
     const TOTAL_SPACE: u32 = 70_000_000;
     const REQUIRED_SPACE: u32 = 30_000_000;
 
-    let sizes = directories.values();
-
-    let available_space = TOTAL_SPACE - sizes.max().unwrap();
+    let available_space = TOTAL_SPACE - directories.values().max().unwrap();
     let needed_space = REQUIRED_SPACE - available_space;
 
     directories
