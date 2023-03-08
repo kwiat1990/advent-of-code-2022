@@ -49,8 +49,62 @@ pub fn part_one(input: &str) -> Option<usize> {
     Some(visible_items)
 }
 
-pub fn part_two(_input: &str) -> Option<u32> {
-    None
+pub fn part_two(input: &str) -> Option<u32> {
+    let (columns, rows) = create_grid(input);
+    let interior_rows = &rows[1..rows.len() - 1];
+    let mut highest_score = 0;
+
+    for (i, row) in interior_rows.iter().enumerate() {
+        for (y, item) in row.iter().enumerate() {
+            let mut count = vec![0, 0, 0, 0];
+
+            let row_start = row[..y].iter().rev();
+            let row_end = row[y + 1..].iter();
+            let col_start = columns[y][..=i].iter().rev();
+            let col_end = columns[y][i + 2..].iter();
+
+            for x in row_start {
+                if x < item {
+                    count[0] += 1;
+                } else {
+                    count[0] += 1;
+                    break;
+                }
+            }
+            for x in row_end {
+                if x < item {
+                    count[1] += 1;
+                } else {
+                    count[1] += 1;
+                    break;
+                }
+            }
+
+            for x in col_start {
+                if x < item {
+                    count[2] += 1;
+                } else {
+                    count[2] += 1;
+                    break;
+                }
+            }
+            for x in col_end {
+                if x < item {
+                    count[3] += 1;
+                } else {
+                    count[3] += 1;
+                    break;
+                }
+            }
+
+            let current_score = count.iter().product();
+            if current_score > highest_score {
+                highest_score = current_score;
+            }
+        }
+    }
+
+    Some(highest_score)
 }
 
 fn main() {
@@ -72,6 +126,6 @@ mod tests {
     #[test]
     fn test_part_two() {
         let input = advent_of_code::read_file("examples", 8);
-        assert_eq!(part_two(&input), None);
+        assert_eq!(part_two(&input), Some(8));
     }
 }
